@@ -1,0 +1,44 @@
+body {
+  font-family: "Alegreya Sans SC", sans-serif;
+  color: #1b1919;
+}
+
+.container-title {
+  margin-top: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#app-name {
+  font-size: 48px;
+  margin-bottom: 48px;
+}
+
+.container-main {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+h3 {
+  margin: 30px;
+}
+
+.input-group mb-3 {
+  display: flex;
+}
+
+.form-group {
+  display: flex;
+}
+
+/* #location-icon:hover {
+  color: #02475e;
+  transform: scale(1.5);
+} */
+
+#search-button:hover {
+  background-color: #02475e;
+}
