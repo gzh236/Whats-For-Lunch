@@ -34,10 +34,14 @@
         <h2 id="first-line">Having a tough time deciding what to eat? </h2>
         <h2 id="second-line">Let your location decide for you today!</h2>
         <h3 id="postal-code">Provide your postal code:</h3>
-        <p>Please only enter the 6 numeric digits of your postal code</p>
-        <p>For Example: 123456</p>
+        <!-- <p>Please only enter the 6 numeric digits of your postal code</p>
+        <p>For Example: 123456</p> -->
       <div class = "form-group">
-        <input class="form-control input-sm" id= "search-form" type="text" placeholder="Your Postal Code" aria-label="Postal Code">
+        <input class="form-control input-sm" 
+          id= "search-form" type="number" 
+          oninput="javascript: if (this.value.length > 6) this.value = this.value.slice(0, 6);"
+          placeholder="Your Postal Code" 
+          aria-label="Postal Code">
         <button type="submit" id= "search-button" class="btn btn-secondary">Search</button>
       </div>
       </div>

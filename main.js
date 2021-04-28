@@ -51,4 +51,21 @@ window.onload = (e) => {
   }
 
   //create empty array/object to hold restaurants
+
+  function searchNearbyRestaurants() {
+    //feed coordinates to Places APIs
+    fetch(
+      `https://maps.googleapis.com/maps/api/place/nearbysearch/json?` +
+        new URLSearchParams({
+          location: `${lat},${long}`,
+          radius: 1000,
+          type: "restaurant",
+          key: "AIzaSyDWyVIoXOWtOBHLyPHFRfAaRLbfOJkB3E4",
+        })
+    )
+      .then((res) => res.json())
+      .then((nearbyRestaurants) => {
+        console.log(nearbyRestaurants);
+      });
+  }
 };
