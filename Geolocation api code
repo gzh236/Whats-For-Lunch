@@ -1,0 +1,35 @@
+Geolocation api code
+
+  //attach Event Listener to location icon; trigger windows.navigator
+  let locationIcon = document.getElementById("location-icon");
+  locationIcon.addEventListener("click", getLocation);
+
+  function returnLocation(location) {
+    console.log("doing return");
+    alert(location);
+    console.log("return location");
+    console.log(location);
+  }
+
+  function errorHandler() {
+    if (err.code === 1) {
+      alert(`Permission Denied!`);
+    } else if (err.code === 2) {
+      alert(`Position is unavailable!`);
+    }
+  }
+
+  function getLocation() {
+    console.log("getting loca");
+    //run windows.nav
+    //navigator.geolocation -> syntax?
+    console.log(navigator);
+    console.log(navigator.geolocation);
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(returnLocation, errorHandler);
+    } else {
+      alert(`Sorry, browser does not support geolocation!`);
+    }
+  }
+
+  //attach Event Listener to 'Search button'; trigger JS Maps API
