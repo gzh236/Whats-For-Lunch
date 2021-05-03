@@ -34,8 +34,6 @@
         <h2 id="first-line">Having a tough time deciding what to eat? </h2>
         <h2 id="second-line">Let your location decide for you today!</h2>
         <h3 id="postal-code">Provide your postal code:</h3>
-        <!-- <p>Please only enter the 6 numeric digits of your postal code</p>
-        <p>For Example: 123456</p> -->
       <div class = "form-group">
         <input class="form-control input-sm" 
           id= "search-form" type="number" 
@@ -44,8 +42,16 @@
           aria-label="Postal Code">
         <button type="submit" id= "search-button" class="btn btn-secondary">Search</button>
       </div>
+      <div class = "row" id="results-section">
       </div>
+      <button type="submit" id= "get-restaurants" class="btn btn-secondary">Get Restaurants</button>
+      </div>
+      <!-- only added here because Maps JS API expects a html element in .PlacesService() -->
+      <div id="map"></div>
     </div>
+    <script async
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDWyVIoXOWtOBHLyPHFRfAaRLbfOJkB3E4&libraries=places">
+    </script>
     <script src="main.js"></script>
   </body>
 </html>
