@@ -6,6 +6,7 @@ window.onload = (e) => {
   //get restaurant button - brings up the list of nearby restaurants and cafes
   let randomiserButton = document.getElementById("random-button");
   randomiserButton.style.visibility = "hidden";
+  randomiserButton.addEventListener("click", randomiser);
 
   //add another event listener which swaps out the text and function of the button
 
@@ -78,17 +79,20 @@ window.onload = (e) => {
       for (var i = 0; i < results.length; i++) {
         console.log(results[i]);
         let resultDisplay = document.createElement("div");
-        resultDisplay.classList.add("card-deck");
+        resultDisplay.classList.add("col-sm-4");
+        resultDisplay.classList.add("col-lg-6");
 
         //create bootstrap card
         let displayCard = document.createElement("div");
-        displayCard.classList.add("card", "mb-3");
+        displayCard.classList.add("card");
+        displayCard.classList.add("h-100");
 
         //card image
         let restaurantImage = document.createElement("img");
+        restaurantImage.classList.add("restaurant-img");
         restaurantImage.src = results[i].photos[0].getUrl({
-          maxWidth: 350,
-          maxHeight: 350,
+          maxWidth: 250,
+          maxHeight: 250,
         });
 
         console.log(restaurantImage);
@@ -117,10 +121,14 @@ window.onload = (e) => {
           isNaN(results[i].rating) ? "N/A" : results[i].rating
         }`;
 
+        //card footer
+        let footer = document.createElement("div");
+        footer.classList.add("card-footer");
+
         //form the card
         cardBody.append(restaurantName, priceLevel, rating);
         // console.log(restaurantImage);
-        displayCard.append(restaurantImage, cardBody);
+        displayCard.append(restaurantImage, cardBody, footer);
         resultDisplay.append(displayCard);
 
         //append card to results section
@@ -130,13 +138,10 @@ window.onload = (e) => {
     }
   }
 
-  //randomise the choices to only display one?
-  console.log(resultArray);
-
   function randomiser() {
     let sample = resultArray[0];
     let randomisedChoice = sample[Math.floor(Math.random() * sample.length)];
-    // console.log(`${randomisedChoice.name}`);
+    console.log(`${randomisedChoice.name}`);
     // remove all the cards
     // only display the randomised card?
   }
