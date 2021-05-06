@@ -143,7 +143,8 @@ window.onload = (e) => {
     let randomisedChoice = sample[Math.floor(Math.random() * sample.length)];
     console.log(`${randomisedChoice.name}`);
     // remove all the cards
-    // only display the randomised card?
+    resultDisplay.remove();
+    // iterate through resultArray and only display randomisedChoice
   }
 
   function unhideRandomButton() {
