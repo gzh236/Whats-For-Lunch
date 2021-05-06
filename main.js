@@ -6,6 +6,7 @@ window.onload = (e) => {
   //get restaurant button - brings up the list of nearby restaurants and cafes
   let randomiserButton = document.getElementById("random-button");
   randomiserButton.style.visibility = "hidden";
+
   randomiserButton.addEventListener("click", randomiser);
 
   //add another event listener which swaps out the text and function of the button
@@ -69,6 +70,7 @@ window.onload = (e) => {
     // console.log(userLocation);
     service = new google.maps.places.PlacesService(map);
     service.nearbySearch(request, createDisplayCards);
+    // service.getDetails();
     unhideRandomButton();
   }
 
@@ -77,10 +79,9 @@ window.onload = (e) => {
       resultArray.push(results);
 
       for (var i = 0; i < results.length; i++) {
-        console.log(results[i]);
+        // console.log(results[i]);
         let resultDisplay = document.createElement("div");
         resultDisplay.classList.add("col-sm-4");
-        resultDisplay.classList.add("col-lg-6");
 
         //create bootstrap card
         let displayCard = document.createElement("div");
@@ -94,8 +95,6 @@ window.onload = (e) => {
           maxWidth: 250,
           maxHeight: 250,
         });
-
-        console.log(restaurantImage);
 
         //card body
         let cardBody = document.createElement("div");
@@ -121,12 +120,16 @@ window.onload = (e) => {
           isNaN(results[i].rating) ? "N/A" : results[i].rating
         }`;
 
+        //card footer text - address of restaurant
+        let restaurantAddress = document.createElement("div");
+        restaurantAddress.innerHTML = `${results[i].vicinity}`;
+
         //card footer
         let footer = document.createElement("div");
         footer.classList.add("card-footer");
 
         //form the card
-        cardBody.append(restaurantName, priceLevel, rating);
+        cardBody.append(restaurantName, priceLevel, rating, restaurantAddress);
         // console.log(restaurantImage);
         displayCard.append(restaurantImage, cardBody, footer);
         resultDisplay.append(displayCard);
@@ -141,20 +144,88 @@ window.onload = (e) => {
   function randomiser() {
     let sample = resultArray[0];
     let randomisedChoice = sample[Math.floor(Math.random() * sample.length)];
-    console.log(`${randomisedChoice.name}`);
+    // console.log(`${randomisedChoice.name}`);
+
     // remove all the cards
-    resultDisplay.remove();
-    // iterate through resultArray and only display randomisedChoice
+    //queryselectorall returns a frozen nodelist; need to iterate through it to do things
+    refreshRandomDisplay();
+    clearDisplay();
+
+    // let displayedResults = document.querySelectorAll(".col-sm-4");
+    // displayedResults.forEach((result) => result.remove());
+
+    // rebuild the card for the randomisedChoice
+
+    let randomisedResultDisplay = document.createElement("div");
+    //create bootstrap card
+    let displayCard = document.createElement("div");
+    displayCard.classList.add("card");
+    displayCard.classList.add("h-100");
+
+    //card image
+    let restaurantImage = document.createElement("img");
+    restaurantImage.classList.add("restaurant-img");
+    restaurantImage.src = randomisedChoice.photos[0].getUrl({
+      maxWidth: 250,
+      maxHeight: 250,
+    });
+
+    //card body
+    let cardBody = document.createElement("div");
+    cardBody.classList.add("card-body");
+
+    //card title
+    let restaurantName = document.createElement("h5");
+    restaurantName.classList.add("card-title");
+    restaurantName.innerHTML = randomisedChoice.name; //placeholder for restaurant name from api result
+
+    //card text
+    let priceLevel = document.createElement("p");
+    priceLevel.classList.add("card-text-pricelevel");
+    priceLevel.innerHTML = `Price Level: ${
+      isNaN(randomisedChoice.price_level) ? "N/A" : randomisedChoice.price_level
+    }`;
+
+    //card rating
+    let rating = document.createElement("p");
+    rating.classList.add("card-text-rating");
+    rating.innerHTML = `Rating: ${
+      //ternary: if results[i].rating is NaN, print: N/A, if not, print: rating
+      isNaN(randomisedChoice.rating) ? "N/A" : randomisedChoice.rating
+    }`;
+
+    //address of restaurant
+    let restaurantAddress = document.createElement("div");
+    restaurantAddress.innerHTML = `${randomisedChoice.vicinity}`;
+
+    //card footer
+    let footer = document.createElement("div");
+    footer.classList.add("card-footer");
+
+    //form the card
+    footer.append(restaurantAddress);
+    cardBody.append(restaurantName, priceLevel, rating, restaurantAddress);
+    // console.log(restaurantImage);
+    displayCard.append(restaurantImage, cardBody, footer);
+    randomisedResultDisplay.append(displayCard);
+
+    //append card to results section
+    let resultSection = document.getElementById("results-section");
+    resultSection.append(randomisedResultDisplay);
+  }
+
+  //clears display after user clicks on random-button
+  function clearDisplay() {
+    let displayedResults = document.querySelectorAll(".col-sm-4");
+    displayedResults.forEach((result) => result.remove());
+  }
+
+  function refreshRandomDisplay() {
+    let randomisedResDisplay = document.querySelector(".card");
+    randomisedResDisplay.remove();
   }
 
   function unhideRandomButton() {
     randomiserButton.style.visibility = "visible";
   }
-
-  //so basically next steps will be to
-  //1) clean up front end - basically make the cards equal length, card-footer maybe
-  //possibliy limit the size of the images, make the cards same height.
-  //2) give address of the place to eat, maybe can call another API...
-  //3) easily open up a map/directions to the place
-  //4)
 };
