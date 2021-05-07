@@ -1,5 +1,6 @@
 window.onload = (e) => {
   //add an event listener to the search button
+
   let searchBtn = document.getElementById("search-button");
   searchBtn.addEventListener("click", getLocationCoordinates);
 
@@ -9,18 +10,20 @@ window.onload = (e) => {
 
   randomiserButton.addEventListener("click", randomiser);
 
-  //add another event listener which swaps out the text and function of the button
+  let inputForm = document.getElementById("search-form");
 
-  //create a variable to hold the value of the user's input
+  inputForm.addEventListener("keyup", (event) => {
+    if (event.key === "Enter") {
+      searchBtn.click();
+    }
+  });
+
   let userInput = "";
-
-  //crete variables to store coordinates
   let lat = "";
   let long = "";
 
   //function to take the input of the user's postal code and return lat/lng
   function getLocationCoordinates() {
-    //save the user's input so that we can use the data
     userInput = document.getElementById("search-form").value;
 
     //ensure that user keys in exactly six numbers for postal code
@@ -52,7 +55,8 @@ window.onload = (e) => {
   let resultArray = [];
 
   function searchNearbyRestaurants() {
-    // console.log(lat, long);
+    clearDisplay();
+
     let userLocation = new google.maps.LatLng(lat, long);
 
     map = new google.maps.Map(document.getElementById("map"), {
@@ -60,26 +64,26 @@ window.onload = (e) => {
       zoom: 15,
     });
 
-    let request = {
+    let searchRestaurantRequest = {
       location: userLocation,
       radius: "2500",
       type: ["restaurant"],
-      rankBy: google.maps.places.RankBy.PROMINENCE,
     };
 
     // console.log(userLocation);
     service = new google.maps.places.PlacesService(map);
-    service.nearbySearch(request, createDisplayCards);
-    // service.getDetails();
+    service.nearbySearch(searchRestaurantRequest, createDisplayCards);
+
     unhideRandomButton();
+    refreshRandomDisplay();
   }
 
   function createDisplayCards(results, status) {
     if (status == google.maps.places.PlacesServiceStatus.OK) {
+      console.log(results);
       resultArray.push(results);
 
       for (var i = 0; i < results.length; i++) {
-        // console.log(results[i]);
         let resultDisplay = document.createElement("div");
         resultDisplay.classList.add("col-sm-4");
 
@@ -103,7 +107,7 @@ window.onload = (e) => {
         //card title
         let restaurantName = document.createElement("h5");
         restaurantName.classList.add("card-title");
-        restaurantName.innerHTML = results[i].name; //placeholder for restaurant name from api result
+        restaurantName.innerHTML = results[i].name;
 
         //card text
         let priceLevel = document.createElement("p");
@@ -146,16 +150,10 @@ window.onload = (e) => {
     let randomisedChoice = sample[Math.floor(Math.random() * sample.length)];
     // console.log(`${randomisedChoice.name}`);
 
-    // remove all the cards
-    //queryselectorall returns a frozen nodelist; need to iterate through it to do things
     refreshRandomDisplay();
     clearDisplay();
 
-    // let displayedResults = document.querySelectorAll(".col-sm-4");
-    // displayedResults.forEach((result) => result.remove());
-
     // rebuild the card for the randomisedChoice
-
     let randomisedResultDisplay = document.createElement("div");
     //create bootstrap card
     let displayCard = document.createElement("div");
@@ -177,7 +175,7 @@ window.onload = (e) => {
     //card title
     let restaurantName = document.createElement("h5");
     restaurantName.classList.add("card-title");
-    restaurantName.innerHTML = randomisedChoice.name; //placeholder for restaurant name from api result
+    restaurantName.innerHTML = randomisedChoice.name;
 
     //card text
     let priceLevel = document.createElement("p");
@@ -220,6 +218,7 @@ window.onload = (e) => {
     displayedResults.forEach((result) => result.remove());
   }
 
+  //clears the random choice card after every click
   function refreshRandomDisplay() {
     let randomisedResDisplay = document.querySelector(".card");
     randomisedResDisplay.remove();
