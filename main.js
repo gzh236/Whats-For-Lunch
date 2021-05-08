@@ -79,6 +79,7 @@ window.onload = (e) => {
   }
 
   function createDisplayCards(results, status) {
+    resultArray = [];
     if (status == google.maps.places.PlacesServiceStatus.OK) {
       console.log(results);
       resultArray.push(results);
