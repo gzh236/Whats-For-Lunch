@@ -28,7 +28,6 @@ window.onload = (e) => {
 
     //ensure that user keys in exactly six numbers for postal code
     if (userInput.length === 6) {
-      console.log(userInput);
 
       fetch(
         `https://maps.googleapis.com/maps/api/geocode/json?` +
@@ -42,7 +41,6 @@ window.onload = (e) => {
           console.log(locationObj);
           lat = locationObj.results[0].geometry.location.lat;
           long = locationObj.results[0].geometry.location.lng;
-          console.log(lat, long);
         })
         .then(() => searchNearbyRestaurants());
     } else {
